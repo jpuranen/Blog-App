@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A layout example that shows off a blog page with a list of posts.">
+    <title>Blog Site Example</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
+    
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
+    <!--<![endif]-->
+    
+    
+        <!--[if lte IE 8]>
+            <link rel="stylesheet" href="css/layouts/blog-old-ie.css">
+        <![endif]-->
+        <!--[if gt IE 8]><!-->
+            <link rel="stylesheet" href="css/layouts/blog.css">
+        <!--<![endif]-->
+    <script>
+        (function() {
+            function main(event) {
+
+                var button = document.getElementById("sendB");
+                button.addEventListener("click", createBlogPost);
+
+                fetchAllBlogs();
+
+                function fetchAllBlogs() {
+
+                    fetch('http://localhost:8080/blogs')
+                        .then(function f(response) {
+                            return response.json()
+                        }).then(getBlogs);
+                }
+                function fetchBlogById(id) {
+                    //console.log("Fetching blog by id!");
+                        fetch(`http://localhost:8080/blogs/${id}`)
+                        .then(function f(response) {
+                            return response.json()
+                        }).then(getBlogs);
+                }
+                function getBlogs (jsonObject) {
+
+                        for(var item = 0; item < jsonObject.length; item++) {
+                            var x        =  document.getElementById("blogshere"),
+                                buttonId = jsonObject[item].id;
+                                option   =  document.createElement("section");
+                                option.id = "section" + jsonObject[item].id;
+
+                            option.className = "post";
+                            option.innerHTML =
+                                "  <header class=\"post-header\">\n" +
+                                "\n" +
+                                "\n" +
+                                " <h2 class=\"post-title\">" + jsonObject[item].header + "</h2>\n" +
+                                "\n" +
+                                "<p class=\"post-meta\">\n" +
+                                "By <a class=\"post-author\" href=\"#\">" + jsonObject[item].name + "</a>\n" +
+                                "</p>\n" +
+                                "</header>\n" +
+                                "\n" +
+                                "<div class=\"post-description\">\n" +
+                                "<p>\n" +
+                                "" + jsonObject[item].body + "\n" +
+                                "</p>\n" +
+                                "</div>\n" +
+                                '<button class="button-success pure-button pure-button-disabled" >Comment this blog</button>\n' +
+                                '<button class="pure-button button-warning pure-button-active" id="buttonId" onclick="myConfirm(\'' + buttonId + '\')" >Delete this blog</button>\n' +
+                                "                  ";
+                            x.appendChild(option);
+                        }
+                    }
+
+
+                function createBlogPost() {
+
+                    fetch("http://localhost:8080/blogs", {
+                        method: "post",
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+
+                        //make sure to serialize your JSON body
+                        body: JSON.stringify({
+                            name: document.getElementById("yourName").value,
+                            header: document.getElementById("header").value,
+                            body: document.getElementById("body").value
+                        })
+                    })
+                        .then( function(response) {
+                            return response.json();
+                        })
+                       .then(function(jsonObject) {
+                           fetchBlogById(jsonObject.id);
+                           $('#form-id')[0].reset();
+                           location.reload();
+                        })
+                    ;
+                }
+            }
+            window.addEventListener('load', main);
+        }())
+    </script>
+</head>
+<body>
+    <div id="layout" class="pure-g">
+        <div class="sidebar pure-u-1 pure-u-md-1-4">
+            <div class="header">
+                <h1 class="brand-title">Blog site</h1>
+                <h2 class="brand-tagline">Creating a blog layout using Pure</h2>
+                <nav class="nav">
+                    <ul class="nav-list">
+                        <li class="nav-item">
+                            <a class="pure-button" href="http://purecss.io">Pure</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="pure-button" href="http://yuilibrary.com">YUI Library</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+        <div class="content pure-u-1 pure-u-md-3-4">
+            <div>
+                <!-- A wrapper for all the blog posts -->
+
+
+                <div class="posts">
+                    <h1 class="content-subhead" id="blogshere">Recent Blogs</h1>
+
+                </div>
+                <div class="posts">
+                    <h1 class="content-subhead">Write a new Blog</h1>
+                    <form class="pure-form" enctype='application/json' action="myurl" method="POST" name="blogForm" id="form-id">
+
+                        <fieldset class="pure-group" >
+                            <input type="text" name="yourName" class="pure-input-1-2" placeholder="Your name" id="yourName">
+                            <input type="text" name="header" class="pure-input-1-2" placeholder="Blog post title" id="header">
+                            <textarea class="pure-input-1-2" name="body" placeholder="Write your blog post here" id="body"></textarea>
+                        </fieldset>
+                       <button type="button" class="pure-button pure-input-1-2 pure-button-primary" value="click" id="sendB">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    function myConfirm(id) {
+        var confirmation = confirm('Do you really want to delete this blog?');
+        if(confirmation) {
+            deleteBlogById(id);
+        }
+    }
+
+    function deleteBlogById(id) {
+        console.log("Deleting the blog...");
+        fetch('http://localhost:8080/blogs' + '/' + id, {method: 'delete'})
+            .then(console.log("Blog deleted!"));
+        location.reload();
+    }
+</script>
+</body>
+</html>
