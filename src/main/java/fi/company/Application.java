@@ -10,12 +10,5 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
-/*
-    @Bean
-    public CommandLineRunner haepaBeani() {
-        MyCommandLineRunner mclr = new MyCommandLineRunner();
 
-        return mclr;
-    }
-*/
 }

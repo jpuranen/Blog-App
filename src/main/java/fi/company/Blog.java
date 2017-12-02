@@ -9,19 +9,11 @@ public class Blog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    /*private long id;*/
+
     private String name;
     private String header;
     @Column(length=1000)
     private String body;
-
-    /*
-
-    public Blog(Long id, String name, String header) {
-        this.id = id;
-        this.name = name;
-        this.header = header;
-    } */
 
     public Blog() {
     }
