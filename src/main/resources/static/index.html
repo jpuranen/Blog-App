@@ -48,7 +48,7 @@
                 }
                 function getBlogs (jsonObject) {
 
-                        for(var item = 0; item < jsonObject.length; item++) {
+                        for(var item = jsonObject.length - 1; item >= 0 ; item--) {
                             var x        =  document.getElementById("blogshere"),
                                 buttonId = jsonObject[item].id;
                                 option   =  document.createElement("section");
@@ -71,8 +71,8 @@
                                 "" + jsonObject[item].body + "\n" +
                                 "</p>\n" +
                                 "</div>\n" +
-                                '<button class="button-success pure-button pure-button-disabled" >Comment this blog</button>\n' +
-                                '<button class="pure-button button-warning pure-button-active" id="buttonId" onclick="myConfirm(\'' + buttonId + '\')" >Delete this blog</button>\n' +
+                                '<button class="button-success pure-button pure-button-disabled" >Comment</button>\n' +
+                                '<button class="pure-button button-warning pure-button-active" id="buttonId" onclick="myConfirm(\'' + buttonId + '\')" >Delete</button>\n' +
                                 "                  ";
                             x.appendChild(option);
                         }
@@ -135,7 +135,7 @@
 
 
                 <div class="posts">
-                    <h1 class="content-subhead" id="blogshere">Recent Blogs</h1>
+                    <h1 class="content-subhead" id="blogshere">The Most Recent Blogs</h1>
 
                 </div>
                 <div class="posts">
