@@ -1,5 +1,7 @@
 package fi.company;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -8,11 +10,14 @@ public class Blog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(notes = "The database generated blog ID")
     private Long id;
-
+    @ApiModelProperty(notes = "The author of the blog")
     private String name;
-    private String header;
+    @ApiModelProperty(notes = "The title of the blog")
+    private String title;
     @Column(length=1000)
+    @ApiModelProperty(notes = "The body of the blog")
     private String body;
 
     public Blog() {
@@ -34,12 +39,12 @@ public class Blog {
         this.name = name;
     }
 
-    public String getHeader() {
-        return this.header;
+    public String getTitle() {
+        return this.title;
     }
 
-    public void setHeader(String header) {
-        this.header = header;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getBody() {
