@@ -2,12 +2,16 @@
 https://github.com/jpuranen/Blog-App
 
 ### Compiling and Running the app
-1. Install Maven
-2. Compile the source code of the project
+1. Install Node.js
+2. Install Maven
+```
+npm install maven
+```
+3. Compile the source code of the project
 ```
 mvn compile
 ```
-3. Run the application using the Maven plugin
+4. Run the application using the Maven plugin
 ```
 mvn spring-boot:run
 ```
