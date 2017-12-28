@@ -7,11 +7,16 @@ https://github.com/jpuranen/Blog-App
 ```
 npm install maven
 ```
-3. Compile the source code of the project
+3. Clone the source code into local folder
 ```
+git clone <url>
+```
+4. Move to project folder and Compile the source code of the project
+```
+cd <project folder>
 mvn compile
 ```
-4. Run the application using the Maven plugin
+5. Run the application using the Maven plugin
 ```
 mvn spring-boot:run
 ```
