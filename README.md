@@ -1,5 +1,8 @@
+
 # Blog-App
 https://github.com/jpuranen/Blog-App
+
+Includes API documentation with Swagger
 
 ### Compiling and Running the app
 1. Install Node.js
